@@ -24,7 +24,7 @@ private:
     map<string, string> maps;
     string newData;
     bool flagID=0;
-    
+    bool flagFirstData=true;
     vector<string> value;
     vector<string> attribute {"patient ID", "last name", "first name", "middle name", "house number",
                               "street", "city", "province", "birthday", "gender", "blood type", 
