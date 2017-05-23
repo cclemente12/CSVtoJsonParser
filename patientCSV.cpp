@@ -144,7 +144,7 @@ void patientCSV::storeInJson()//appending in Json file
     fstream file1;
     if(flagFirstData)
     {
-    file1.open("PatientJson.json",ios::in);
+    file1.open("PatientJson.json",ios::out|ios::trunc);
     flagFirstData=false;
     }
     else{
