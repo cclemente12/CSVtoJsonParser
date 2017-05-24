@@ -44,6 +44,8 @@ hospitalQuery::hospitalQuery() {
             patientCSV* csv = new patientCSV();
             
     }
+    
+    readJson();
 }
 
 hospitalQuery::hospitalQuery(const hospitalQuery& orig) {
@@ -52,3 +54,18 @@ hospitalQuery::hospitalQuery(const hospitalQuery& orig) {
 hospitalQuery::~hospitalQuery() {
 }
 
+void hospitalQuery::readJson(){
+    cout<<"***************Searched Patient*********"<<endl;
+    fstream file;
+    string buf;
+    file.open("PatientJson.json",ios::in);
+    while(!file.eof())
+    {
+        getline(file,buf);
+        cout<<buf<<endl;
+        
+    }
+    cout<<"****************************************"<<endl;
+    file.close();
+    
+}

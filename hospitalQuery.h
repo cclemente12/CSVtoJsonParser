@@ -9,9 +9,11 @@ public:
     hospitalQuery();
     hospitalQuery(const hospitalQuery& orig);
     virtual ~hospitalQuery();
+    void readJson();
 private:
         string* input = new string[3];
         int option;
+        
 };
 
 #endif /* HOSPITALQUERY_H */
