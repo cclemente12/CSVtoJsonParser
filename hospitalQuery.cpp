@@ -19,7 +19,7 @@ hospitalQuery::hospitalQuery() {
             //Go searchInFile function
             fstream file;
             file.open("requestJson.json",ios::out|ios::trunc);
-            file<<"[{Patient ID:"+input[0]+"},{Facility ID:00000001}]";
+            file<<"[{Patient ID:"+input[0]+"},{Facility ID:00000001},{Health Worker ID:00000001}]";
             file.close();
             patientCSV* csv = new patientCSV();
            // searchInFile(temp);
@@ -35,7 +35,7 @@ hospitalQuery::hospitalQuery() {
             getline(cin, input[1]);
             cout << "Enter Patient's Middle Name: ";
             getline(cin, input[2]);
-            temp = "[{Last Name:"+input[0]+"},{First Name:"+input[1]+"},{Middle Name:"+input[2]+"},{Facility ID:00000001}]";
+            temp ="[{Last Name:"+input[0]+"},{First Name:"+input[1]+"},{Middle Name:"+input[2]+"},{Facility ID:00000001},{Health Worker ID:00000001}]";
             fstream file;
             file.open("requestJson.json",ios::out|ios::trunc);
             file<<temp;

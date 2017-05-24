@@ -19,7 +19,7 @@ patientCSV::patientCSV() {
         [this]{
             for(auto i =0;i<3;i++)
                 input[i].clear();};
-        if(facilityDBSearch())        
+        if(facilityDBSearch()&&healthWorker())        
             getAttribute();
     }
     file.close();
@@ -27,6 +27,7 @@ patientCSV::patientCSV() {
 }
 
 patientCSV::patientCSV(const patientCSV& orig) {
+    
 }
 
 patientCSV::~patientCSV() {
@@ -69,7 +70,20 @@ bool patientCSV::searchInFacilityDB(int pos)
 }
 
 
-void patientCSV::healthWorker(){
+bool patientCSV::healthWorker(){
+    int pos,i=0;
+    for(int i = 0;i<request.size();i++){
+        pos=request.at(i).find(":");
+        if(request.at(i).substr(0,pos)=="Health Worker ID")
+        {
+          
+            return XML().healthWorkerFound(request.at(i).substr(pos+1,request.at(i).length()-1));
+        
+            
+        }
+        
+    }
+    return false;
     
 }
 
@@ -111,9 +125,11 @@ void patientCSV::getAttribute()
 void patientCSV::searchInFile()
 {
     //opening the csv file
-    fstream file;
+    fstream file,file1;
     file.open("patient.csv", ios::in);
     //getting every line in file
+    file1.open("PatientJson.json",ios::out|ios::trunc);
+    file1.close();
     while(!file.eof())
     {
         string newText;
@@ -208,14 +224,8 @@ void patientCSV::convertToString(){
 void patientCSV::storeInJson()//appending in Json file
 {
     fstream file1;
-    if(flagFirstData)
-    {
-    file1.open("PatientJson.json",ios::out|ios::trunc);
-    flagFirstData=false;
-    }
-    else{
     file1.open("PatientJson.json",ios::app); 
-    }
+    
     file1<<newData;
     value.clear();
     file1.close();

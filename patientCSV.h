@@ -6,6 +6,7 @@
 #include <vector>
 #include <fstream>
 #include <string.h>
+#include "XML.h"
 using namespace std;
 class patientCSV {
 public:
@@ -17,7 +18,7 @@ public:
     void getAttribute();
     void storeInJson();
     void inputToJson();
-    void healthWorker();
+    bool healthWorker();
     bool facilityDBSearch();
     bool searchInFacilityDB(int pos);
     void convertToString();
