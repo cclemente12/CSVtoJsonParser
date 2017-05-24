@@ -3,36 +3,26 @@ char pastChar;
 
 patientCSV::patientCSV() {
     //the start menu
-    cout << "Find option:" << endl <<  "\t(1)Type ID" << endl << "\t(2)Name" << endl;
-    cin >> option;
-    string emptyBuf;
-    //this line make sense because getline() get the value of the previous cin.
-    //so this getline is just a dummy
-    getline(cin, emptyBuf);
-    //Enter Option 1
-    if(option==1)
+    fstream file;
+    file.open("requestJson.json",ios::in);
+    while(!file.eof())
     {
-            cout << "Enter Patient's ID: ";
-            //get the patient ID
-            getline(cin, input[0]);
-            flagID=0;
-            //Go searchInFile function
-            searchInFile(input);
-            
+        getline(file,buffer);
+        dup = strdup(buffer.c_str());
+        pch = strtok (dup,"[{,}]");
+        int ctr = 0;
+            while (pch != NULL)
+            {	
+                string s(pch);
+                request.push_back(s);
+                pch = strtok (NULL, "[{,}]");
+            }
+        [this]{
+            for(auto i =0;i<3;i++)
+                input[i].clear();};
+        getAttribute();
     }
-//    Enter Option 2
-    else
-    {
-            cout << "Enter Patient's Last Name: ";
-            getline(cin, input[0]);
-            cout << "Enter Patient's First Name: ";
-            getline(cin, input[1]);
-            cout << "Enter Patient's Middle Name: ";
-            getline(cin, input[2]);
-            flagID=1;
-            searchInFile(input);
-            
-    }
+    file.close();
     
 }
 
@@ -42,7 +32,41 @@ patientCSV::patientCSV(const patientCSV& orig) {
 patientCSV::~patientCSV() {
 }
 
-void patientCSV::searchInFile(string* input)
+void patientCSV::getAttribute()
+{ ///
+    
+    int pos,i=0;
+    for(int i = 0;i<request.size();i++){
+        pos=request.at(i).find(":");
+        if(request.at(i).substr(0,pos)=="Patient ID")
+        {
+            flagID=0;
+            input[0] = request.at(i).substr(pos+1,request.at(i).length()-1);
+            searchInFile();
+            return;
+        }
+        else if(request.at(i).substr(0,pos)=="Last Name")       
+            input[0] = request.at(i).substr(pos+1,request.at(i).length()-1);
+        else if(request.at(i).substr(0,pos)=="First Name")
+            input[1] = request.at(i).substr(pos+1,request.at(i).length()-1);
+        else if(request.at(i).substr(0,pos)=="Middle Name")
+            input[2] = request.at(i).substr(pos+1,request.at(i).length()-1);
+        
+    }
+    if(input[0]!=""&&input[1]!=""&&input[2]!=""){
+        flagID=1;
+        searchInFile();
+    }
+    
+}
+
+void patientCSV::inputToJson(){
+    
+}
+
+
+
+void patientCSV::searchInFile()
 {
     //opening the csv file
     fstream file;
@@ -107,7 +131,7 @@ void patientCSV::searchCSVID(string text)
 }
 
 void patientCSV::pushToMap(){ // MAP THE KEY-VALUE PAIR
-    for(unsigned int i = 0; i < attribute.size(); i++){
+    for(auto i = 0; i < attribute.size(); i++){
         maps.insert(std::pair<string,string> (
                                               attribute.at(i),
                                               value.at(i)

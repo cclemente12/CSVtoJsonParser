@@ -5,26 +5,33 @@
 #include <map>
 #include <vector>
 #include <fstream>
+#include <string.h>
 using namespace std;
 class patientCSV {
 public:
     patientCSV();
     patientCSV(const patientCSV& orig);
-    void searchInFile(string* input);
+    void searchInFile();
     void searchCSVID(string text);
     void pushToMap();
+    void getAttribute();
     void storeInJson();
+    void inputToJson();
     void convertToString();
     virtual ~patientCSV();
     
 private:
+    char *dup;
+    char *pch;
     int option;
+    string buffer;
     string* input = new string[3];
     string text;
     map<string, string> maps;
     string newData;
     bool flagID=0;
     bool flagFirstData=true;
+    vector<string> request;
     vector<string> value;
     vector<string> attribute {"patient ID", "last name", "first name", "middle name", "house number",
                               "street", "city", "province", "birthday", "gender", "blood type", 

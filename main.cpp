@@ -1,6 +1,5 @@
 #include <cstdlib>
-
-#include "patientCSV.h"
+#include "hospitalQuery.h"
 
 using namespace std;
 
@@ -8,7 +7,7 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    patientCSV* patient = new patientCSV();
+    hospitalQuery* patient = new hospitalQuery();
     
     return 0;
 }
