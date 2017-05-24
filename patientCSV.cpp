@@ -10,7 +10,6 @@ patientCSV::patientCSV() {
         getline(file,buffer);
         dup = strdup(buffer.c_str());
         pch = strtok (dup,"[{,}]");
-        int ctr = 0;
             while (pch != NULL)
             {	
                 string s(pch);
@@ -20,7 +19,8 @@ patientCSV::patientCSV() {
         [this]{
             for(auto i =0;i<3;i++)
                 input[i].clear();};
-        getAttribute();
+        if(facilityDBSearch())        
+            getAttribute();
     }
     file.close();
     
@@ -31,6 +31,48 @@ patientCSV::patientCSV(const patientCSV& orig) {
 
 patientCSV::~patientCSV() {
 }
+bool patientCSV::facilityDBSearch()
+{
+    int pos,i=0;
+    for(int i = 0;i<request.size();i++){
+        pos=request.at(i).find(":");
+        if(request.at(i).substr(0,pos)=="Facility ID")
+        {
+            return searchInFacilityDB(i);
+            
+        }
+        
+    }
+    return false;
+    
+}
+
+bool patientCSV::searchInFacilityDB(int pos)
+{
+    string buf;
+    fstream file;
+    file.open("FacilityDB.json",ios::in);
+    while(!file.eof())
+    {
+        getline(file,buf);
+        dup = strdup(buf.c_str());
+        pch = strtok (dup,"[{,}]");
+            while (pch != NULL)
+            {	
+                string s(pch);
+                if(s==request.at(pos))
+                    return true;
+                pch = strtok (NULL, "[{,}]");
+            }
+    }   
+        return false;
+}
+
+
+void patientCSV::healthWorker(){
+    
+}
+
 
 void patientCSV::getAttribute()
 { ///
@@ -45,7 +87,13 @@ void patientCSV::getAttribute()
             searchInFile();
             return;
         }
-        else if(request.at(i).substr(0,pos)=="Last Name")       
+        
+    }
+    
+    for(int i = 0;i<request.size();i++)
+    {
+        pos=request.at(i).find(":");
+       if(request.at(i).substr(0,pos)=="Last Name")     
             input[0] = request.at(i).substr(pos+1,request.at(i).length()-1);
         else if(request.at(i).substr(0,pos)=="First Name")
             input[1] = request.at(i).substr(pos+1,request.at(i).length()-1);
@@ -59,12 +107,6 @@ void patientCSV::getAttribute()
     }
     
 }
-
-void patientCSV::inputToJson(){
-    
-}
-
-
 
 void patientCSV::searchInFile()
 {

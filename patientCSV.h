@@ -17,6 +17,9 @@ public:
     void getAttribute();
     void storeInJson();
     void inputToJson();
+    void healthWorker();
+    bool facilityDBSearch();
+    bool searchInFacilityDB(int pos);
     void convertToString();
     virtual ~patientCSV();
     
@@ -25,7 +28,7 @@ private:
     char *pch;
     int option;
     string buffer;
-    string* input = new string[3];
+    string* input = new string[5];
     string text;
     map<string, string> maps;
     string newData;
