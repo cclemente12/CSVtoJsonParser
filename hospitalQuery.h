@@ -13,6 +13,7 @@ public:
 private:
         string* input = new string[3];
         int option;
+        int flag=0;//Editted
         
 };
 

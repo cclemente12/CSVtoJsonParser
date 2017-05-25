@@ -60,6 +60,7 @@ void hospitalQuery::readJson(){
     file.open("PatientJson.json",ios::in);
     if(file)
     {
+    flag =1;
     while(!file.eof())
     {
         getline(file,buf);

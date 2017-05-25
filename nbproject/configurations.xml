@@ -31,6 +31,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>patientEdit.json</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -58,6 +59,8 @@
       <item path="patientCSV.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="patientCSV.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="patientEdit.json" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -94,6 +97,8 @@
       <item path="patientCSV.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="patientCSV.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="patientEdit.json" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

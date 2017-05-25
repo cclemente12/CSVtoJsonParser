@@ -3,7 +3,40 @@ char pastChar;
 
 patientCSV::patientCSV() {
     //the start menu
+    //Editted from here 1st edit
+    int fileFlag = 1;
     fstream file;
+    string empty;
+    fstream ifile("patientEdit.json",ios::in);
+    if (ifile) 
+    {
+        fileFlag = 0;
+        int pos,i = 0;
+       // ifile.open("patientEdit.json",ios::in);
+        
+        while(!ifile.eof())
+       {
+        getline(ifile,buffer);
+        //cout<<"1";
+        dup = strdup(buffer.c_str());
+        pch = strtok (dup,"[{,}]");
+            while (pch != NULL)
+            {	
+                 string s(pch);
+                 pos=s.find(":");
+               //  cout<<s.substr(pos+1,s.length()-1)<<endl;
+                 value.push_back(s.substr(pos+1,s.length()-1));
+                 pch = strtok (NULL, "[{,}]");
+            }
+        
+        }
+        convertToCSV();
+        //remove("patientEdit.json");
+        
+    }
+    
+    //End of 1st edit
+    if(fileFlag){
     file.open("requestJson.json",ios::in);
     while(!file.eof())
     {
@@ -23,6 +56,7 @@ patientCSV::patientCSV() {
             getAttribute();
     }
     file.close();
+    }
     
 }
 
@@ -229,4 +263,39 @@ void patientCSV::storeInJson()//appending in Json file
     file1<<newData;
     value.clear();
     file1.close();
+}
+///Editted Here
+void patientCSV::convertToCSV(){
+    newData = newData+ value.at(0);
+    cout<<value.size()<<endl;
+    for(int i =1; i<value.size();i++)
+    {
+    newData = newData +","+value.at(i);    
+    }
+    editDataCSV();
+}
+
+void patientCSV::editDataCSV()
+{
+    fstream file1,file;
+    string buf;
+    file1.open("patient.csv",ios::in);
+    file.open("temp.csv",ios::app);
+    while(!file1.eof())
+    {
+       getline(file1,buf);
+       int pos = buf.find(",");
+       if(buf.substr(0,pos)==newData.substr(0,pos))
+       {
+           file<<newData<<endl;
+       }
+       else
+       {
+           file<<buf<<endl;
+       }
+    }
+    file.close();
+    file1.close();
+    remove("patient.csv");
+    rename("temp.csv","patient.csv");
 }

@@ -23,6 +23,9 @@ public:
     bool searchInFacilityDB(int pos);
     void convertToString();
     virtual ~patientCSV();
+    //Added 2 function
+    void convertToCSV();
+    void editDataCSV();
     
 private:
     char *dup;
