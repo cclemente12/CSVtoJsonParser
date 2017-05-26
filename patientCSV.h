@@ -20,7 +20,7 @@ public:
     void inputToJson();
     bool healthWorker();
     bool facilityDBSearch();
-    bool searchInFacilityDB(int pos);
+    bool searchInFacilityDB(string search);
     void convertToString();
     virtual ~patientCSV();
     //Added 2 function

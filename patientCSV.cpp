@@ -1,6 +1,6 @@
 #include "patientCSV.h"
 char pastChar;
-
+int k= 0;
 patientCSV::patientCSV() {
     //the start menu
     //Editted from here 1st edit
@@ -52,7 +52,8 @@ patientCSV::patientCSV() {
         [this]{
             for(auto i =0;i<3;i++)
                 input[i].clear();};
-        if(facilityDBSearch()&&healthWorker())        
+        if(facilityDBSearch()&&healthWorker())
+           // cout<<"tru";
             getAttribute();
     }
     file.close();
@@ -73,7 +74,9 @@ bool patientCSV::facilityDBSearch()
         pos=request.at(i).find(":");
         if(request.at(i).substr(0,pos)=="Facility ID")
         {
-            return searchInFacilityDB(i);
+           // cout<<request.at(i).substr(pos+1,request.at(i).length())<<endl;
+           // return true;
+            return searchInFacilityDB(request.at(i).substr(pos+1,request.at(i).length()));
             
         }
         
@@ -81,9 +84,10 @@ bool patientCSV::facilityDBSearch()
     return false;
     
 }
-
-bool patientCSV::searchInFacilityDB(int pos)
+//CEDRICK EDIT
+bool patientCSV::searchInFacilityDB(string search)
 {
+   // cout<<search<<endl;
     string buf;
     fstream file;
     file.open("FacilityDB.json",ios::in);
@@ -95,17 +99,23 @@ bool patientCSV::searchInFacilityDB(int pos)
             while (pch != NULL)
             {	
                 string s(pch);
-                if(s==request.at(pos))
+                int pos1 = s.find(":");
+              //  cout<<s.substr(pos1+1,s.length())<<endl;
+                if(s.substr(pos1+1,s.length())==search){
                     return true;
+                   // cout<<"asdasdasd";
+                }
+                    
                 pch = strtok (NULL, "[{,}]");
             }
     }   
         return false;
 }
 
-
+//End Edit
 bool patientCSV::healthWorker(){
     int pos,i=0;
+    
     for(int i = 0;i<request.size();i++){
         pos=request.at(i).find(":");
         if(request.at(i).substr(0,pos)=="Health Worker ID")
@@ -131,6 +141,7 @@ void patientCSV::getAttribute()
         if(request.at(i).substr(0,pos)=="Patient ID")
         {
             flagID=0;
+      
             input[0] = request.at(i).substr(pos+1,request.at(i).length()-1);
             searchInFile();
             return;
@@ -170,7 +181,8 @@ void patientCSV::searchInFile()
         getline(file,newText);
         //go searchCSVID function
         text = newText;
-        searchCSVID(text);
+       // cout<<text<<endl;
+       searchCSVID(text);
     }
     file.close();
 }
@@ -178,8 +190,10 @@ void patientCSV::searchInFile()
 
 void patientCSV::searchCSVID(string text)
 {
+
   string temporary;
   int ctr=0;
+
     //to get every attribute value in file seperated with comma
     for(auto i=text.begin() ; i != text.end(); ++i) 
     {   
@@ -210,7 +224,7 @@ void patientCSV::searchCSVID(string text)
             }
          //if value i is comma, store temporary in vector value.
             value.push_back(temporary);
-            //clear temporary
+             //clear temporary
             temporary.clear();
         }
         //store past character
@@ -218,7 +232,14 @@ void patientCSV::searchCSVID(string text)
     }
     //storing the last value in csv file
     value.push_back(temporary);
+    
+//    for(int i=0;i<value.size();i++)
+//    {
+//        cout<<value.at(i)<<endl;
+//    }
     //go pushToMap function
+    //value.clear();
+    //cout<<value.size()<<endl;
     pushToMap();   
 }
 
@@ -232,11 +253,12 @@ void patientCSV::pushToMap(){ // MAP THE KEY-VALUE PAIR
     }
     //go convertToString function
     convertToString();
+    
    
 }
 
 void patientCSV::convertToString(){
-     //creating a json format string through vector value data
+     //creating a json format string through vector value data         
      newData = "[{Patient ID:"+value.at(0)+"},";
      newData = newData+"{Last Name:"+value.at(1)+"},"; 	
      newData = newData+"{First Name:"+value.at(2)+"},"; 
